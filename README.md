@@ -11,7 +11,7 @@ git clone code repo and run deploy.sh from the repo
 ### common
 set DB instance IP, username, password
 ### on WEB instance:
-clone sample app repo
+get sample repo from github
 deploy sample app
 ### on DB instance:
 deploy postgresql
