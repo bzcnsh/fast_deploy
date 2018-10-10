@@ -118,9 +118,12 @@ resource "aws_instance" "web" {
   instance_type = "t2.micro"
   subnet_id     = "${aws_subnet.public_net.id}"
   vpc_security_group_ids   = ["${aws_security_group.http_ssh.id}"]
-  user_data     = "${replace("${replace("${file("init.sh")}", "##ROLE##", "WEB")}", "##DB_IP##", "${aws_instance.db.public_ip}")}"  
+#  user_data     = "${replace("${replace("${file("init.sh")}", "##ROLE##", "WEB")}", "##DB_IP##", "${aws_instance.db.public_ip}")}"  
   key_name      = "${var.key_name}"
   depends_on    = ["aws_instance.db"]
+  tags {
+    role_id = "web"
+  }
 }
 
 resource "aws_instance" "db" {
@@ -128,8 +131,11 @@ resource "aws_instance" "db" {
   instance_type = "t2.micro"
   subnet_id     = "${aws_subnet.public_net.id}"
   vpc_security_group_ids   = ["${aws_security_group.postgresql_ssh.id}"]
-  user_data     = "${replace("${file("init.sh")}", "##ROLE##", "DB")}"
+#  user_data     = "${replace("${file("init.sh")}", "##ROLE##", "DB")}"
   key_name      = "${var.key_name}"
+  tags {
+    role_id = "db"
+  }
 }
 
 output "web_public_ip" {

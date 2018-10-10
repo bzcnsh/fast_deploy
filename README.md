@@ -23,6 +23,7 @@ create user with permission to create DB
 pushd terraform; echo "yes" | terraform apply -input=false -var aws_profile=<AWS_PROFILE_NAME> -var key_name=<SSH_KEY_NAME>  
 AWS_PROFILE_NAME should already be configured in your ~/.aws/credentials file  
 SSH_KEY_NAME should be present in your AWS EC2 key_pairs  
+DB_IP=$(terraform  output -json | jq -r ".db_public_ip | .value | .[0]"); WEB_IP=$(terraform  output -json | jq -r ".web_public_ip | .value | .[0]"); cat ../ansible/inventory.tpl | sed -e 's/##WEB_IP##/'"$WEB_IP"'/' -e 's/##DB_IP##/'"$DB_IP"'/' > ../ansible/inventory  
 
 # problems:
 ## complex setup for access to private github repo that contains the sample app
